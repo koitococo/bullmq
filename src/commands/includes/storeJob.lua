@@ -22,7 +22,7 @@ local function storeJob(eventsKey, jobIdKey, jobId, name, data, opts, timestamp,
     end
 
     if chainKey then
-        table.insert(optionalValues, "ck")
+        table.insert(optionalValues, "chk")
         table.insert(optionalValues, chainKey)
     end
 

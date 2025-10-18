@@ -68,6 +68,7 @@ local rcall = redis.call
 --- @include "includes/moveChildFromDependenciesIfNeeded"
 --- @include "includes/prepareJobForProcessing"
 --- @include "includes/promoteDelayedJobs"
+--- @include "includes/removeChainKeyIfNeeded"
 --- @include "includes/removeDeduplicationKeyIfNeededOnFinalization"
 --- @include "includes/removeJobKeys"
 --- @include "includes/removeJobsByMaxAge"
@@ -108,7 +109,7 @@ if rcall("EXISTS", jobIdKey) == 1 then -- Make sure job exists
     local maxCount = opts['keepJobs']['count']
     local maxAge = opts['keepJobs']['age']
 
-    local jobAttributes = rcall("HMGET", jobIdKey, "parentKey", "parent", "deid")
+    local jobAttributes = rcall("HMGET", jobIdKey, "parentKey", "parent", "deid", "chk")
     local parentKey = jobAttributes[1] or ""
     local parentId = ""
     local parentQueueKey = ""
@@ -136,6 +137,7 @@ if rcall("EXISTS", jobIdKey) == 1 then -- Make sure job exists
     local prefix = ARGV[7]
 
     removeDeduplicationKeyIfNeededOnFinalization(prefix, jobAttributes[3], jobId)
+    removeChainKeyIfNeeded(jobAttributes[4], jobIdKey)
 
     -- If job has a parent we need to
     -- 1) remove this job id from parents dependencies
