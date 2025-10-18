@@ -25,6 +25,7 @@ import {
 import {
   errorObject,
   isEmpty,
+  getChainKey,
   getParentKey,
   lengthInUtf8Bytes,
   optsDecodeMap,
@@ -152,6 +153,11 @@ export class Job<
   parent?: ParentKeys;
 
   /**
+   * Chain key identifier.
+   */
+  chainKey?: string;
+
+  /**
    * Debounce identifier.
    * @deprecated use deduplicationId
    */
@@ -231,6 +237,8 @@ export class Job<
 
     this.parentKey = getParentKey(opts.parent);
 
+    this.chainKey = getChainKey(opts.parent);
+
     if (opts.parent) {
       this.parent = { id: opts.parent.id, queueKey: opts.parent.queue };
 
@@ -282,6 +290,7 @@ export class Job<
     const job = new this<T, R, N>(queue, name, data, opts, opts && opts.jobId);
 
     job.id = await job.addJob(client, {
+      chainKey: job.chainKey,
       parentKey: job.parentKey,
       parentDependenciesKey: job.parentKey
         ? `${job.parentKey}:dependencies`

@@ -6,12 +6,12 @@ import {
   FlowQueuesOpts,
   FlowOpts,
   IoredisListener,
-  ParentOptions,
   QueueBaseOptions,
   RedisClient,
   Tracer,
   ContextManager,
 } from '../interfaces';
+import { BaseParentOptions } from '../types';
 import { getParentKey, isRedisInstance, trace } from '../utils';
 import { Job } from './job';
 import { KeysMap, QueueKeys } from './queue-keys';
@@ -22,7 +22,7 @@ export interface AddNodeOpts {
   multi: ChainableCommander;
   node: FlowJob;
   parent?: {
-    parentOpts: ParentOptions;
+    parentOpts: BaseParentOptions;
     parentDependenciesKey: string;
   };
   /**
@@ -35,7 +35,7 @@ export interface AddChildrenOpts {
   multi: ChainableCommander;
   nodes: FlowJob[];
   parent: {
-    parentOpts: ParentOptions;
+    parentOpts: BaseParentOptions;
     parentDependenciesKey: string;
   };
   queuesOpts?: FlowQueuesOpts;

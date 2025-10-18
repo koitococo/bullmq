@@ -240,11 +240,13 @@ export class Scripts {
       job.name,
       job.timestamp,
       job.parentKey || null,
+      // TODO this can be a boolean and only pass this key in addParentJob script
       parentKeyOpts.waitChildrenKey || null,
       parentKeyOpts.parentDependenciesKey || null,
       parent,
       job.repeatJobKey,
       job.deduplicationId ? `${queueKeys.de}:${job.deduplicationId}` : null,
+      parentKeyOpts.chainKey || null,
     ];
 
     let encodedOpts;

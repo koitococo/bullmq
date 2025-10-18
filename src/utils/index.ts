@@ -186,6 +186,12 @@ export function getParentKey(opts: ParentOptions): string | undefined {
   }
 }
 
+export function getChainKey(opts: ParentOptions): string | undefined {
+  if (opts) {
+    return `${opts.queue}:${opts.chainId}`;
+  }
+}
+
 export const clientCommandMessageReg =
   /ERR unknown command ['`]\s*client\s*['`]/;
 

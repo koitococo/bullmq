@@ -1,4 +1,4 @@
-import { JobsOptions } from '../types';
+import { BaseParentOptions, JobsOptions } from '../types';
 import { QueueOptions } from './queue-options';
 
 export interface FlowJobBase<T> {
@@ -6,7 +6,9 @@ export interface FlowJobBase<T> {
   queueName: string;
   data?: any;
   prefix?: string;
-  opts?: Omit<T, 'repeat'>;
+  opts?: Omit<T, 'repeat' | 'parent'> & {
+    parent?: BaseParentOptions;
+  };
   children?: FlowChildJob[];
 }
 

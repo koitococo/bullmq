@@ -21,6 +21,7 @@ export interface ParentKeys {
 }
 
 export type ParentKeyOpts = {
+  chainKey?: string;
   waitChildrenKey?: string;
   parentDependenciesKey?: string;
   parentKey?: string;
