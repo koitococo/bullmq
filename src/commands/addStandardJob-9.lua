@@ -103,7 +103,7 @@ end
 
 -- Store the job.
 storeJob(eventsKey, jobIdKey, jobId, args[3], ARGV[2], opts, timestamp,
-         parentKey, parentData, repeatJobKey)
+         parentKey, parentData, repeatJobKey, nil)
 
 local target, isPausedOrMaxed = getTargetQueueList(metaKey, KEYS[7], KEYS[1], KEYS[2])
 

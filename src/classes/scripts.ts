@@ -168,9 +168,15 @@ export class Scripts {
     const keys: (string | Buffer)[] = [
       queueKeys.meta,
       queueKeys.id,
+      queueKeys.wait,
+      queueKeys.paused,
+      queueKeys.prioritized,
       queueKeys.delayed,
+      queueKeys.active,
       queueKeys.completed,
       queueKeys.events,
+      queueKeys.marker,
+      queueKeys.pc,
     ];
 
     keys.push(pack(args), job.data, encodedOpts);
@@ -246,7 +252,7 @@ export class Scripts {
       parent,
       job.repeatJobKey,
       job.deduplicationId ? `${queueKeys.de}:${job.deduplicationId}` : null,
-      parentKeyOpts.chainKey || null,
+      parentKeyOpts.chainKey,
     ];
 
     let encodedOpts;
@@ -272,7 +278,7 @@ export class Scripts {
 
     let result: string | number;
 
-    if (parentKeyOpts.waitChildrenKey) {
+    if (parentKeyOpts.waitChildrenKey || parentKeyOpts.chainKey) {
       result = await this.addParentJob(client, job, encodedOpts, args);
     } else if (typeof opts.delay == 'number' && opts.delay > 0) {
       result = await this.addDelayedJob(client, job, encodedOpts, args);

@@ -188,7 +188,7 @@ export function getParentKey(opts: ParentOptions): string | undefined {
 
 export function getChainKey(opts: ParentOptions): string | undefined {
   if (opts) {
-    return `${opts.queue}:${opts.chainId}`;
+    return `${opts.queue}:ch:${opts.chainId}`;
   }
 }
 

@@ -34,7 +34,7 @@ class Scripts:
         self.commands = {
             "addStandardJob": self.redisClient.register_script(self.getScript("addStandardJob-9.lua")),
             "addDelayedJob": self.redisClient.register_script(self.getScript("addDelayedJob-6.lua")),
-            "addParentJob": self.redisClient.register_script(self.getScript("addParentJob-5.lua")),
+            "addParentJob": self.redisClient.register_script(self.getScript("addParentJob-11.lua")),
             "addPrioritizedJob": self.redisClient.register_script(self.getScript("addPrioritizedJob-9.lua")),
             "changePriority": self.redisClient.register_script(self.getScript("changePriority-7.lua")),
             "cleanJobsInSet": self.redisClient.register_script(self.getScript("cleanJobsInSet-3.lua")),
@@ -162,7 +162,19 @@ class Scripts:
         """
         Add a job to the queue that is a parent
         """
-        keys = self.getKeys(['meta', 'id', 'delayed', 'completed', 'events'])
+        keys = self.getKeys([
+            'meta',
+            'id',
+            'wait',
+            'paused',
+            'prioritized',
+            'delayed',
+            'active',
+            'completed',
+            'events'
+            'marker',
+            'pc'
+            ])
         
         args = self.addJobArgs(job, waiting_children_key)
 

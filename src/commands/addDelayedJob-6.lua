@@ -96,7 +96,7 @@ if deduplicationJobId then
 end
 
 local delay, priority = storeJob(eventsKey, jobIdKey, jobId, args[3], ARGV[2],
-    opts, timestamp, parentKey, parentData, repeatJobKey)
+    opts, timestamp, parentKey, parentData, repeatJobKey, nil)
 
 addDelayedJob(jobId, delayedKey, eventsKey, timestamp, maxEvents, KEYS[1], delay)
 

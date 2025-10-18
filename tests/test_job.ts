@@ -351,7 +351,7 @@ describe('Job', function () {
       const data = { foo: 'bar' };
       const parent = await Job.create(parentQueue, 'testParent', data);
       await Job.create(queue, 'testJob1', values[0], {
-        parent: { id: parent.id, queue: `${prefix}:${parentQueueName}` },
+        parent: { id: parent.id!, queue: `${prefix}:${parentQueueName}` },
       });
 
       const job = (await parentWorker.getNextJob(token)) as Job;

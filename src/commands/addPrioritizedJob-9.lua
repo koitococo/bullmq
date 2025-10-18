@@ -100,7 +100,7 @@ end
 -- Store the job.
 local delay, priority = storeJob(eventsKey, jobIdKey, jobId, args[3], ARGV[2],
                                  opts, timestamp, parentKey, parentData,
-                                 repeatJobKey)
+                                 repeatJobKey, nil)
 
 -- Add the job to the prioritized set
 local isPausedOrMaxed = isQueuePausedOrMaxed(metaKey, activeKey)
