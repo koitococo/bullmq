@@ -1,7 +1,7 @@
 import { BackoffOptions } from './backoff-options';
 import { KeepJobs } from './keep-jobs';
-import { ParentOptions } from './parent-options';
 import { RepeatOptions } from './repeat-options';
+import { ParentOptions } from '../types/parent-options';
 
 export interface DefaultJobOptions {
   /**

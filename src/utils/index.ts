@@ -9,11 +9,11 @@ import { CONNECTION_CLOSED_ERROR_MSG } from 'ioredis/built/utils';
 import {
   ChildMessage,
   ContextManager,
-  ParentOptions,
   RedisClient,
   Span,
   Tracer,
 } from '../interfaces';
+import { ParentOptions } from '../types';
 import { EventEmitter } from 'events';
 import * as semver from 'semver';
 

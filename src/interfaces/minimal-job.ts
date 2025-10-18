@@ -1,9 +1,9 @@
 import { JobsOptions } from '../types/job-options';
 import { JobProgress } from '../types/job-progress';
 import { JobJsonSandbox } from '../types/job-json-sandbox';
+import { ParentOptions } from '../types/parent-options';
 import { JobJson } from './job-json';
 import { ParentKeys } from './parent';
-import { ParentOptions } from './parent-options';
 
 export type BulkJobOptions = Omit<JobsOptions, 'repeat'>;
 
