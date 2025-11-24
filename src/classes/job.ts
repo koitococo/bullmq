@@ -801,13 +801,13 @@ export class Job<
     err: E,
     token: string,
     fetchNext = false,
-  ): Promise<void | any[]> {
+  ): Promise<[any[], boolean]> {
     this.failedReason = err?.message;
 
     // Check if an automatic retry should be performed
     const [shouldRetry, retryDelay] = await this.shouldRetryJob(err);
 
-    return this.queue.trace<Promise<void | any[]>>(
+    return this.queue.trace<Promise<[any[], boolean]>>(
       SpanKind.INTERNAL,
       this.getSpanOperation(shouldRetry, retryDelay),
       this.queue.name,
@@ -830,7 +830,7 @@ export class Job<
         if (shouldRetry) {
           if (retryDelay) {
             // Retry with delay
-            result = await this.scripts.moveToDelayed(
+            await this.scripts.moveToDelayed(
               this.id,
               Date.now(),
               retryDelay,
@@ -839,14 +839,9 @@ export class Job<
             );
           } else {
             // Retry immediately
-            result = await this.scripts.retryJob(
-              this.id,
-              this.opts.lifo,
-              token,
-              {
-                fieldsToUpdate,
-              },
-            );
+            await this.scripts.retryJob(this.id, this.opts.lifo, token, {
+              fieldsToUpdate,
+            });
           }
         } else {
           const args = this.scripts.moveToFailedArgs(
@@ -874,7 +869,7 @@ export class Job<
 
         this.attemptsMade += 1;
 
-        return result;
+        return [result, shouldRetry];
       },
     );
   }

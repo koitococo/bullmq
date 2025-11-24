@@ -170,6 +170,18 @@ export interface WorkerListener<
    * This event is triggered when locks are successfully renewed.
    */
   locksRenewed: (data: { count: number; jobIds: string[] }) => void;
+
+  /**
+   * Listen to 'unrecoverable' event
+   *
+   * This event is triggered when a job fails with an UnrecoverableError or reach
+   * the maximum number of attempts.
+   */
+  unrecoverable: (
+    job: Job<DataType, ResultType, NameType>,
+    error: Error,
+    prev: string,
+  ) => void;
 }
 
 /**
@@ -1079,13 +1091,16 @@ will never work with more accuracy than 1ms. */
         return this.moveToActive(client, token, this.opts.name);
       }
 
-      const result = await job.moveToFailed(
+      const [result, shouldRetry] = await job.moveToFailed(
         err,
         token,
         fetchNextCallback() && !(this.closing || this.paused),
       );
 
       this.emit('failed', job, err, 'active');
+      if (!shouldRetry) {
+        this.emit('unrecoverable', job, err, 'active');
+      }
 
       // Note: result can be undefined if moveToFailed fails (e.g., lock was lost)
       if (result) {
